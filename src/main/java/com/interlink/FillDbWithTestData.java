@@ -9,7 +9,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class FillDbWithTestData {
 
     public static void main(String[] args) {
-//        System.setProperty(Config.CONFIG_BATCH_TRANSACTION,"true");
         ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
         System.out.println("context loaded");
         UserService userService = context.getBean(UserService.class);

@@ -5,5 +5,5 @@ package com.interlink;
  */
 public interface UserService {
     void populateDatabase();
-    void createUser();
+    //void createUser();
 }
