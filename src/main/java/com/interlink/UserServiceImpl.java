@@ -46,12 +46,6 @@ public class UserServiceImpl implements UserService {
                     System.out.println(String.format("%s is friend of %s", StringUtils.isBlank(friend.getName()) ? friend.getId() : friend.getName(), user.getName()));
                 }
             }
-            Result result1 = userDao.findAllUsersWhichCurrentKnows(user.getId());
-            if (result1 != null) {
-                for (User person : result1) {
-
-                }
-            }
             return;
         }
         user = new User(1L, "Jane", "Aniston", "jane@test.com", "test2");
