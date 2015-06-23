@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.neo4j.config.EnableNeo4jRepositories;
 import org.springframework.data.neo4j.config.Neo4jConfiguration;
 import org.springframework.data.neo4j.rest.SpringCypherRestGraphDatabase;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * Created by DmitriyS on 23/06/2015.
@@ -14,6 +15,7 @@ import org.springframework.data.neo4j.rest.SpringCypherRestGraphDatabase;
 @Configuration
 @ComponentScan
 @EnableNeo4jRepositories(basePackages = "com.interlink")
+@EnableTransactionManagement
 public class Config extends Neo4jConfiguration {
     public Config() {
         setBasePackage("com.interlink");

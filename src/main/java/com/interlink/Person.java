@@ -30,8 +30,9 @@ public class Person {
     }
 
     public String toString() {
-        String results = name + "'s teammates include\n";
-        if (teammates != null) {
+        String results = name;
+        if (teammates != null && !teammates.isEmpty()) {
+            results += " has teammates:\n";
             for (Person person : teammates) {
                 results += "\t- " + person.name + "\n";
             }
