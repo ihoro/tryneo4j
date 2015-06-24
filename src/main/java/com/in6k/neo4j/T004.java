@@ -6,6 +6,7 @@ import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.unsafe.batchinsert.BatchInserter;
 import org.neo4j.unsafe.batchinsert.BatchInserters;
+import org.springframework.util.StopWatch;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +24,7 @@ public class T004 {
     public static void main(String[] args) {
         BatchInserter batchInserter = null;
         try {
-            batchInserter = BatchInserters.inserter("/Users/igoro/opt/neo4j/data/graph.db");
+            batchInserter = BatchInserters.inserter("E:\\database\\neo4j");
             final BatchInserter inserter = batchInserter;
 
             Label personLabel = DynamicLabel.label("Person");
@@ -31,9 +32,16 @@ public class T004 {
             RelationshipType created = DynamicRelationshipType.withName("CREATED");
             Map<String, Object> props = new HashMap<>();
 
+            StopWatch watch = new StopWatch();
+            watch.start("insert God user");
+
             long god = inserter.createNode(props, godLabel);
 
-            final long count = 100_000_000;
+            watch.stop();
+
+            watch.start("insert 10_000_000 users and add relationship with God");
+
+            final long count = 10_000_000;
             LongStream.rangeClosed(1L, count).forEach(userId -> {
                 props.put("name", "user #" + userId);
                 long person = inserter.createNode(props, personLabel);
@@ -41,6 +49,8 @@ public class T004 {
                 inserter.createRelationship(god, person, created, new HashMap<>());
             });
 
+            watch.stop();
+            System.out.println(watch.prettyPrint());
         } finally {
             if (batchInserter != null)
                 batchInserter.shutdown();
