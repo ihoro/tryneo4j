@@ -12,15 +12,14 @@ import java.util.Map;
 import java.util.stream.LongStream;
 
 /**
- * Mass creation of nodes with BatchInserter - http://neo4j.com/docs/stable/batchinsert.html
+ * BatchInserter: many PersonS :CREATED by one God - http://neo4j.com/docs/stable/batchinsert.html
  *
- * 100_000 nodes created in a moment (<=1s) on igoro's host.
- * 100_000_000 nodes created in 2 min on igoro's host.
- * $(du -hs data/graph.db) = 5.3 G
+ * It took 4.5 min on igoro's host.
+ * $(du -hs data/graph.db) = 8.5 G
  *
- * Created by igoro on 23/06/2015.
+ * Created by igoro on 24/06/2015.
  */
-public class T003 {
+public class T004 {
     public static void main(String[] args) {
         BatchInserter batchInserter = null;
         try {
@@ -28,14 +27,18 @@ public class T003 {
             final BatchInserter inserter = batchInserter;
 
             Label personLabel = DynamicLabel.label("Person");
-            RelationshipType knows = DynamicRelationshipType.withName("KNOWS");
-
+            Label godLabel = DynamicLabel.label("God");
+            RelationshipType created = DynamicRelationshipType.withName("CREATED");
             Map<String, Object> props = new HashMap<>();
+
+            long god = inserter.createNode(props, godLabel);
 
             final long count = 100_000_000;
             LongStream.rangeClosed(1L, count).forEach(userId -> {
                 props.put("name", "user #" + userId);
-                long nodeId = inserter.createNode(props, personLabel);
+                long person = inserter.createNode(props, personLabel);
+
+                inserter.createRelationship(god, person, created, new HashMap<>());
             });
 
         } finally {
