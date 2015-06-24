@@ -7,7 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.neo4j.config.EnableNeo4jRepositories;
 import org.springframework.data.neo4j.config.Neo4jConfiguration;
 import org.springframework.data.neo4j.rest.SpringCypherRestGraphDatabase;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
 /**
  * Created by DmitriyS on 23/06/2015.
@@ -16,7 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan
 @EnableNeo4jRepositories(basePackages = "com.interlink")
 @EnableTransactionManagement
-public class Config extends Neo4jConfiguration {
+public class Config extends Neo4jConfiguration implements TransactionManagementConfigurer {
     public Config() {
         setBasePackage("com.interlink");
     }
@@ -26,4 +28,8 @@ public class Config extends Neo4jConfiguration {
         return new SpringCypherRestGraphDatabase("http://localhost:7474/db/data/", "neo4j", "neo");
     }
 
+    @Override
+    public PlatformTransactionManager annotationDrivenTransactionManager() {
+        return neo4jTransactionManager(graphDatabaseService());
+    }
 }
