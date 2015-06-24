@@ -22,9 +22,14 @@ import java.util.stream.LongStream;
  */
 public class T004 {
     public static void main(String[] args) {
+        StopWatch watch = new StopWatch();
+
         BatchInserter batchInserter = null;
         try {
+            final long count = 10_000_000;
+
             batchInserter = BatchInserters.inserter("E:\\database\\neo4j");
+            //batchInserter = BatchInserters.inserter("/Users/igoro/opt/neo4j/data/graph.db");
             final BatchInserter inserter = batchInserter;
 
             Label personLabel = DynamicLabel.label("Person");
@@ -32,16 +37,14 @@ public class T004 {
             RelationshipType created = DynamicRelationshipType.withName("CREATED");
             Map<String, Object> props = new HashMap<>();
 
-            StopWatch watch = new StopWatch();
             watch.start("insert God user");
 
             long god = inserter.createNode(props, godLabel);
 
             watch.stop();
 
-            watch.start("insert 10_000_000 users and add relationship with God");
+            watch.start("insert " + count + " users and add relationship with God");
 
-            final long count = 10_000_000;
             LongStream.rangeClosed(1L, count).forEach(userId -> {
                 props.put("name", "user #" + userId);
                 long person = inserter.createNode(props, personLabel);
@@ -50,10 +53,14 @@ public class T004 {
             });
 
             watch.stop();
-            System.out.println(watch.prettyPrint());
         } finally {
-            if (batchInserter != null)
+            if (batchInserter != null) {
+                watch.start("shutdown");
                 batchInserter.shutdown();
+                watch.stop();
+            }
         }
+
+        System.out.println(watch.prettyPrint());
     }
 }
