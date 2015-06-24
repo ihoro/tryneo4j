@@ -1,4 +1,4 @@
-package com.interlink;
+package com.in6k.neo4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

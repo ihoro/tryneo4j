@@ -1,4 +1,4 @@
-package com.interlink;
+package com.in6k.neo4j;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.springframework.context.annotation.Bean;
@@ -16,11 +16,11 @@ import org.springframework.transaction.annotation.TransactionManagementConfigure
  */
 @Configuration
 @ComponentScan
-@EnableNeo4jRepositories(basePackages = "com.interlink")
+@EnableNeo4jRepositories(basePackages = "com.in6k")
 @EnableTransactionManagement
 public class Config extends Neo4jConfiguration implements TransactionManagementConfigurer {
     public Config() {
-        setBasePackage("com.interlink");
+        setBasePackage("com.in6k");
     }
 
     @Bean

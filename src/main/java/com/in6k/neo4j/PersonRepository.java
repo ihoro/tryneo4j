@@ -1,4 +1,4 @@
-package com.interlink;
+package com.in6k.neo4j;
 
 /**
  * Created by igoro on 23/06/2015.
